@@ -1,4 +1,4 @@
-package Test_to_remove;
+package InputExcel;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Test {
+public class InputExcelFileProcess {
 
     private List<String> articleList;
 
-    public Test(){
+    public InputExcelFileProcess(){
         articleList = new ArrayList<>();
     }
 

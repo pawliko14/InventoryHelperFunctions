@@ -1,4 +1,4 @@
-package Test_to_remove;
+package ArticleStock;
 
 
 import DBConnectorFATDB.DBConnectorFATDB;
@@ -25,7 +25,7 @@ public class RetriveArticleStock {
         return ArticlecodeVerschaffingscode;
     }
 
-    public Map<String,String> getOnlyByTyperticles(String type) throws Exception {
+    public Map<String,String> getOnlyByTyperticles(VerschaffingsCode type) throws Exception {
         if(ArticlecodeVerschaffingscode == null || ArticlecodeVerschaffingscode.isEmpty())
         {
             throw new Exception("List of Articles is empty");
@@ -58,7 +58,7 @@ public class RetriveArticleStock {
 
 
            if (rs.next() == false) {
-               System.out.println("There is no record"+ a +" in database");
+               System.out.println("There is no record: "+ a +" in database");
            } else {
                do {
 
@@ -77,6 +77,8 @@ public class RetriveArticleStock {
 
 
     }
+
+
 
 
 }
