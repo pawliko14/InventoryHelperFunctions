@@ -117,7 +117,6 @@ public class main {
 
 
         Function generates excel file
-
      */
     public static void bestelling500Analyze() throws SQLException, IOException, InvalidFormatException {
         InputExcelFileProcess inputExcelFileProcess = new InputExcelFileProcess();

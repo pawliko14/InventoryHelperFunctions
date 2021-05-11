@@ -72,7 +72,7 @@ public class RetriveArticleStock {
 
        }
 
-        rs.close();;
+        rs.close();
         pstmnt.close();
 
 
