@@ -12,6 +12,7 @@ import java.util.List;
 public class InputExcelFileProcess {
 
     private List<String> articleList;
+    private boolean EndOccured;
 
     public InputExcelFileProcess(){
         articleList = new ArrayList<>();
@@ -55,7 +56,7 @@ public class InputExcelFileProcess {
         // 1. You can obtain a rowIterator and columnIterator and iterate over them
         System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
         Iterator<Row> rowIterator = sheet.rowIterator();
-        while (rowIterator.hasNext()) {
+        while ( !EndOccured ) {
             Row row = rowIterator.next();
 
             // Now let's iterate over the columns of the current row
@@ -64,6 +65,12 @@ public class InputExcelFileProcess {
             while (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
                 String cellValue = dataFormatter.formatCellValue(cell);
+
+                if(cellValue.equalsIgnoreCase("END")) {
+                 System.out.println("END occurred");
+                    EndOccured = true;
+                    break;
+                }
                 articleList.add(cellValue);
             }
         }

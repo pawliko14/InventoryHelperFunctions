@@ -1,3 +1,4 @@
+import ArticleCosts_InventoryPrices.ArticleCostsWithInventory;
 import Bestelling500.Retrive500FromHS;
 import ExcelFIle.ExcelFIle;
 import ExcelFIle.ExcelFileCostPrices;
@@ -22,9 +23,14 @@ public class main {
 
         redirectOutputToFile();
         
-    //   ArticleAnalyze ();
-    //    bestelling500Analyze();
-          articleCostPrice();
+        //   ArticleAnalyze ();
+        //   bestelling500Analyze();
+        //    articleCostPrice();
+
+
+        ArticleCostsWithInventory articleCostsWithInventory = new ArticleCostsWithInventory();
+        articleCostsWithInventory.doAnalyze();
+
 
     }
 
