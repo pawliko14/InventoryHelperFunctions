@@ -21,15 +21,38 @@ public class main {
 
     public static void main(String[] args) throws Exception {
 
-        redirectOutputToFile();
+
+         /*
+
+         Further steps:
+         1. create User interface
+            1.1 User interface should have ability to print results during data process.
+                At first glance, there should be temporary database for processing results,
+                during processing this database should be fullfiled with new data.
+                User in web will fetch data every 1-10s until last row is reached.
+
+                this solution may cause following error:
+                 - if there will be pararell connection for instance, 2 users will do process
+                 in the same time for different datasets, there may be concurrency / overriding data.
+                 + to solve this, program should have ability to pick users, each of them should have an access
+                 to small part of database and his/her table for data processing.
+                 there should be handler that will check if user is currently logged in, if so
+                 user cannot login again until specific time is reached, or program is finished.
+
+                 those divagation could be solved by spring security
+
+          */
+
+
+     //   redirectOutputToFile();
         
-        //   ArticleAnalyze ();
+          ArticleAnalyze ();
         //   bestelling500Analyze();
         //    articleCostPrice();
 
 
-        ArticleCostsWithInventory articleCostsWithInventory = new ArticleCostsWithInventory();
-        articleCostsWithInventory.doAnalyze();
+   //       ArticleCostsWithInventory articleCostsWithInventory = new ArticleCostsWithInventory();
+   //     articleCostsWithInventory.doAnalyze();
 
 
     }

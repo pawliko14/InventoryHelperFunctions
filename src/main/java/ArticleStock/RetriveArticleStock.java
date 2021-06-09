@@ -34,7 +34,7 @@ public class RetriveArticleStock {
         Map<String,String> filteredByType =
                       ArticlecodeVerschaffingscode.entrySet()
                         .stream()
-                        .filter(a->a.getValue().equals(type))
+                        .filter(a->a.getValue().equals(type.toString()))
                         .collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
 
         return filteredByType;
