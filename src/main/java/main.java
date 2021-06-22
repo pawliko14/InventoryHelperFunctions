@@ -1,10 +1,11 @@
-import ArticleCosts_InventoryPrices.ArticleCostsWithInventory;
+import ArticleStock.ObjectMubeaArticlesManyColumns;
 import Bestelling500.Retrive500FromHS;
 import ExcelFIle.ExcelFIle;
 import ExcelFIle.ExcelFileCostPrices;
 import ArticleStock.RetriveArticleStock;
 import InputExcel.InputExcelFileProcess;
 import ArticleStock.VerschaffingsCode;
+import InputExcel.InputExcelFileProcess_manyolumns;
 import Parameters.Parameters;
 import artikelCostPrice.RetrivePriceFromHS;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -14,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class main {
@@ -126,6 +130,63 @@ public class main {
 
         System.out.println("filtered by P");
         System.out.println(s.getOnlyByTyperticles(VerschaffingsCode.P));
+
+        s.getOnlyByTyperticles(VerschaffingsCode.P).entrySet().stream().forEach(System.out::println);
+
+            // call for function if you need to compare list of element and sheet of elements
+        //articleAnalyzeWIthMoreDataInExcelSheet(inputExcelFileProcess, s);
+
+
+    }
+
+    private static void articleAnalyzeWIthMoreDataInExcelSheet(InputExcelFileProcess inputExcelFileProcess, RetriveArticleStock s) throws IOException, InvalidFormatException {
+
+        // final list
+        List<ObjectMubeaArticlesManyColumns> finalManyColumns = new ArrayList<>();
+
+        // comparator list of articles, and map of articles and its descriptions
+        List<ObjectMubeaArticlesManyColumns> manyColumns = retreiveMubeaAriclesManyColumns(inputExcelFileProcess);
+
+        //article that dont exist in HSDATFAT
+        List<String> articlesThatDontExistInFATDB = s.getArticlesThatDontExistInFATDB();
+
+
+
+
+
+        // extremely time consuming process n^2, need to refactor
+        // try to find occurance of elements
+        for(int i = 0 ; i < articlesThatDontExistInFATDB.size() ;i++) {
+            for(int j = 0 ; j < manyColumns.size(); j++) {
+                if(articlesThatDontExistInFATDB.get(i).equals(manyColumns.get(j).getArticleNumber())) {
+                    finalManyColumns.add(manyColumns.get(j));
+                }
+            }
+        }
+
+        System.out.print("done\n");
+        long countBeforeRemoveRepitition = finalManyColumns.stream().count();
+        System.out.print("countBeforeRemoveRepitition " + countBeforeRemoveRepitition);
+
+        List<ObjectMubeaArticlesManyColumns> collectionWithoutRepititions = finalManyColumns.stream().distinct().collect(Collectors.toList());
+
+        System.out.print("countAfterRemovingRepitisiont " + collectionWithoutRepititions.stream().count());
+
+        System.out.print("no repititions\n");
+
+        collectionWithoutRepititions.stream()
+                .sorted(Comparator.comparing(ObjectMubeaArticlesManyColumns::getArticleNumber))
+                .forEach(System.out::println);
+    }
+
+    private static List<ObjectMubeaArticlesManyColumns> retreiveMubeaAriclesManyColumns(InputExcelFileProcess inputExcelFileProcess) throws IOException, InvalidFormatException {
+        InputExcelFileProcess_manyolumns inputExcelFileProcess_manyolumns = new InputExcelFileProcess_manyolumns();
+        inputExcelFileProcess_manyolumns.readFromExcelFile("MubeaArticles_PriceDescription.xlsx");
+
+        return inputExcelFileProcess_manyolumns.getArticleList();
+
+//        System.out.println("List of articles,desc and unit price from xlsx file");
+//        inputExcelFileProcess.getArticleList().forEach(System.out::println);
     }
 
 

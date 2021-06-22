@@ -2,11 +2,13 @@ package ArticleStock;
 
 
 import DBConnectorFATDB.DBConnectorFATDB;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +17,22 @@ import java.util.stream.Collectors;
 public class RetriveArticleStock {
 
     Map<String, String> ArticlecodeVerschaffingscode;
+    private List<String> ArticlesThatDontExistInFATDB;
 
     public RetriveArticleStock(){
         ArticlecodeVerschaffingscode = new HashMap<>();
+        ArticlesThatDontExistInFATDB = new ArrayList<>();
 
+    }
+
+    public List<String> getArticlesThatDontExistInFATDB() {
+
+        if(this.ArticlesThatDontExistInFATDB.size() == 0)
+        {
+            System.out.println("there is no Article that dont exists");
+            return new ArrayList<>();
+        }
+        return ArticlesThatDontExistInFATDB;
     }
 
     public Map<String, String> getArticlecodeVerschaffingscode() {
@@ -58,7 +72,8 @@ public class RetriveArticleStock {
 
 
            if (rs.next() == false) {
-               System.out.println("There is no record: "+ a +" in database");
+               System.out.println("Articles, There is no record: "+ a +" in database");
+               ArticlesThatDontExistInFATDB.add(a);
            } else {
                do {
 
