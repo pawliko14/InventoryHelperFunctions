@@ -7,6 +7,8 @@ import InputExcel.InputExcelFileProcess;
 import ArticleStock.VerschaffingsCode;
 import InputExcel.InputExcelFileProcess_manyolumns;
 import Parameters.Parameters;
+import PurchaseAnalyzeBasedOnArticlesAndLeverancier.BestellingObject;
+import PurchaseAnalyzeBasedOnArticlesAndLeverancier.Logic;
 import artikelCostPrice.RetrivePriceFromHS;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -24,33 +26,21 @@ import java.util.stream.Collectors;
 public class main {
 
     public static void main(String[] args) throws Exception {
+      //   redirectOutputToFile();
+
+        //PURCHASE ANALYZE
+        //     doPurchaseAnalyze();
 
 
-         /*
+        // PURCHASE ANALYZE BASED ON ARTICLES AND LEVERANCIRR
+        Logic logic2015 = new Logic("2021", "1190031");
+             List<BestellingObject> bestellingObjects2015 = logic2015.doAnalyze();
 
-         Further steps:
-         1. create User interface
-            1.1 User interface should have ability to print results during data process.
-                At first glance, there should be temporary database for processing results,
-                during processing this database should be fullfiled with new data.
-                User in web will fetch data every 1-10s until last row is reached.
-
-                this solution may cause following error:
-                 - if there will be pararell connection for instance, 2 users will do process
-                 in the same time for different datasets, there may be concurrency / overriding data.
-                 + to solve this, program should have ability to pick users, each of them should have an access
-                 to small part of database and his/her table for data processing.
-                 there should be handler that will check if user is currently logged in, if so
-                 user cannot login again until specific time is reached, or program is finished.
-
-                 those divagation could be solved by spring security
-
-          */
+        PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle e = new PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle("complexAnalyze2021.xlsx", "2021");
+                e.CreateFile2(bestellingObjects2015);
 
 
-     //   redirectOutputToFile();
-        
-          ArticleAnalyze ();
+        //   ArticleAnalyze ();
         //   bestelling500Analyze();
         //    articleCostPrice();
 
@@ -59,6 +49,20 @@ public class main {
    //     articleCostsWithInventory.doAnalyze();
 
 
+    }
+
+    /**
+     *
+     * purchase analyze -
+     * analzye is based directly on supplier
+     *
+     * generates: excel file
+     *
+     * @throws SQLException
+     */
+    private void doPurchaseAnalyze() throws SQLException {
+                    Logic logic = new Logic("2021-01-01", "2021-07-28");
+                       logic.doAnalyze();
     }
 
     private static void redirectOutputToFile() throws FileNotFoundException {
@@ -117,13 +121,16 @@ public class main {
  */
     public static void ArticleAnalyze() throws Exception {
 
+
+
         InputExcelFileProcess inputExcelFileProcess = new InputExcelFileProcess();
         inputExcelFileProcess.readFromExcelFile("MubeaArticles.xlsx");
 
         RetriveArticleStock s = new RetriveArticleStock();
         s.retriveArticleType(inputExcelFileProcess.getArticleList());
 
-        System.out.println( s.getArticlecodeVerschaffingscode());
+      //  System.out.println( s.getArticlecodeVerschaffingscode());
+        s.getArticlecodeVerschaffingscode().entrySet().stream().forEach((System.out::println));
 
         System.out.println("filtered by A");
         System.out.println(s.getOnlyByTyperticles(VerschaffingsCode.A));
