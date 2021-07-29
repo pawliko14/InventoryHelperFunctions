@@ -10,6 +10,7 @@ import Parameters.Parameters;
 import PurchaseAnalyzeBasedOnArticlesAndLeverancier.BestellingObject;
 import PurchaseAnalyzeBasedOnArticlesAndLeverancier.Logic;
 import artikelCostPrice.RetrivePriceFromHS;
+import lombok.SneakyThrows;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.File;
@@ -29,15 +30,11 @@ public class main {
       //   redirectOutputToFile();
 
         //PURCHASE ANALYZE
-        //     doPurchaseAnalyze();
+         //    doPurchaseAnalyze();
 
 
         // PURCHASE ANALYZE BASED ON ARTICLES AND LEVERANCIRR
-        Logic logic2015 = new Logic("2021", "1190031");
-             List<BestellingObject> bestellingObjects2015 = logic2015.doAnalyze();
-
-        PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle e = new PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle("complexAnalyze2021.xlsx", "2021");
-                e.CreateFile2(bestellingObjects2015);
+          //  doPurchaseAnalyzeBasedOnArticlesAndLeverancier()
 
 
         //   ArticleAnalyze ();
@@ -46,9 +43,21 @@ public class main {
 
 
    //       ArticleCostsWithInventory articleCostsWithInventory = new ArticleCostsWithInventory();
-   //     articleCostsWithInventory.doAnalyze();
+   //           articleCostsWithInventory.doAnalyze();
 
 
+    }
+
+    private  static void doPurchaseAnalyzeBasedOnArticlesAndLeverancier() throws SQLException, IOException {
+        Logic logic2015 = new Logic("2021", "1190031");
+        List<BestellingObject> bestellingObjects2015 = logic2015.doAnalyze();
+
+        PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle e = new PurchaseAnalyzeBasedOnArticlesAndLeverancier.ExcelFIle("complexAnalyze2021.xlsx", "2021");
+        try {
+            e.CreateFile2(bestellingObjects2015);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /**
@@ -60,8 +69,9 @@ public class main {
      *
      * @throws SQLException
      */
-    private void doPurchaseAnalyze() throws SQLException {
-                    Logic logic = new Logic("2021-01-01", "2021-07-28");
+    private static  void doPurchaseAnalyze() throws SQLException, IOException {
+        System.out.println("doPurchaseAnalyze");
+                    PurchaseAnalyze.Logic logic = new PurchaseAnalyze.Logic("2021-01-01", "2021-07-28");
                        logic.doAnalyze();
     }
 
